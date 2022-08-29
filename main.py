@@ -15,7 +15,7 @@ def get_groups_info(token):
     print(response.json())
 
 
-def get_upload_address(token, group_id):
+def get_upload_url(token, group_id):
     method = "photos.getWallUploadServer"
     api_version = "5.131"
     payload = {
@@ -34,7 +34,7 @@ def main():
     env.read_env()
     group_id = "215609822"
     vk_access_token = env.str("VK_ACCESS_TOKEN")
-    upload_url = get_upload_address(vk_access_token, group_id)
+    upload_url = get_upload_url(vk_access_token, group_id)
 
 
 if __name__ == "__main__":
