@@ -30,12 +30,28 @@ def get_upload_url(token, group_id):
     return response.json()['response'].get('upload_url')
 
 
-def send_image(upload_url):
+def send_image(upload_url, group_id, token):
     path = Path.cwd() / 'images' / 'comix.png'
     with open(path, 'rb') as file:
         files = {"photo": file}
         response = requests.post(upload_url, files=files)
         response.raise_for_status()
+    server = response.json()['server']
+    photo = response.json()['photo']
+    hash = response.json()['hash']
+    method = "photos.saveWallPhoto"
+    api_version = "5.131"
+    payload = {
+            "access_token": token,
+            "group_id": group_id,
+            "server": server,
+            "photo": photo,
+            "hash": hash,
+            "v": api_version
+            }
+    url = f"https://api.vk.com/method/{method}" 
+    response = requests.post(url, params=payload)
+    response.raise_for_status()
     print(response.json())
 
 
@@ -45,7 +61,7 @@ def main():
     group_id = "215609822"
     vk_access_token = env.str("VK_ACCESS_TOKEN")
     upload_url = get_upload_url(vk_access_token, group_id)
-    send_image(upload_url)
+    send_image(upload_url, group_id, vk_access_token)
 
 if __name__ == "__main__":
     main()
