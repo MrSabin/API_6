@@ -1,5 +1,6 @@
 import requests
 from environs import Env
+from pathlib import Path
 
 
 def get_groups_info(token):
@@ -29,13 +30,22 @@ def get_upload_url(token, group_id):
     return response.json()['response'].get('upload_url')
 
 
+def send_image(upload_url):
+    path = Path.cwd() / 'images' / 'comix.png'
+    with open(path, 'rb') as file:
+        files = {"photo": file}
+        response = requests.post(upload_url, files=files)
+        response.raise_for_status()
+    print(response.json())
+
+
 def main():
     env = Env()
     env.read_env()
     group_id = "215609822"
     vk_access_token = env.str("VK_ACCESS_TOKEN")
     upload_url = get_upload_url(vk_access_token, group_id)
-
+    send_image(upload_url)
 
 if __name__ == "__main__":
     main()
