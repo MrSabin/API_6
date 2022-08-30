@@ -39,6 +39,10 @@ def send_image(upload_url, group_id, token):
     server = response.json()['server']
     photo = response.json()['photo']
     hash = response.json()['hash']
+    return server, photo, hash
+
+
+def save_image(token, group_id, server, photo, hash):
     method = "photos.saveWallPhoto"
     api_version = "5.131"
     payload = {
@@ -58,10 +62,13 @@ def send_image(upload_url, group_id, token):
 def main():
     env = Env()
     env.read_env()
+
     group_id = "215609822"
     vk_access_token = env.str("VK_ACCESS_TOKEN")
+
     upload_url = get_upload_url(vk_access_token, group_id)
-    send_image(upload_url, group_id, vk_access_token)
+    server, photo, hash = send_image(upload_url, group_id, vk_access_token)
+    save_image(vk_access_token, group_id, server, photo, hash)
 
 if __name__ == "__main__":
     main()
