@@ -27,9 +27,3 @@ def extract_extension(url):
     unquoted = urllib.parse.unquote(parsed.path)
     return os.path.splitext(unquoted)[-1]
 
-
-path = "images"
-name = "comix"
-url, comment = get_image_link("https://xkcd.com/info.0.json")
-download_image(url, path, name)
-print(comment)

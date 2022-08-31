@@ -1,7 +1,7 @@
 import requests
 from environs import Env
 from pathlib import Path
-
+from download import get_image_link, download_image 
 
 def get_groups_info(token):
     method = "groups.get"
@@ -61,21 +61,39 @@ def save_image(token, group_id, server, photo, hash):
     return image_id, image_owner_id
 
 
-def post_image():
-    method = "wall_post"
+def post_image(token, owner_id, attachments, message):
+    method = "wall.post"
+    api_version = "5.131"
     url = f"https://api.vk.com/method/{method}" 
+    payload = {
+            "access_token": token,
+            "owner_id": f"-{owner_id}",
+            "from_group": 1,
+            "attachments": attachments,
+            "message": message,
+            "v": api_version
+            }
+    response = requests.post(url, params=payload)
+    response.raise_for_status()
+    print(response.json())
 
 
 def main():
     env = Env()
     env.read_env()
-
+    xkcd_link = "https://xkcd.com/info.0.json" 
     group_id = "215609822"
     vk_access_token = env.str("VK_ACCESS_TOKEN")
+    save_folder = "images"
+    image_name = "comix"
+    image_url, message = get_image_link(xkcd_link)
 
+    download_image(image_url, save_folder, image_name)
     upload_url = get_upload_url(vk_access_token, group_id)
     server, photo, hash = send_image(upload_url)
-    save_image(vk_access_token, group_id, server, photo, hash)
+    image_id, image_owner_id = save_image(vk_access_token, group_id, server, photo, hash)
+    attachments = f"photo{image_owner_id}_{image_id}" 
+    post_image(vk_access_token, group_id, attachments, message)
 
 if __name__ == "__main__":
     main()
