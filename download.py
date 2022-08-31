@@ -9,8 +9,14 @@ def get_image_link(url):
     response.raise_for_status()
     image_link = response.json()['img']
     author_comment = response.json()['alt']
+    return image_link, author_comment
+
+
+def get_total_images(url):
+    response = requests.get(url)
+    response.raise_for_status()
     total_images = response.json()['num']
-    return image_link, author_comment, total_images
+    return total_images
 
 
 def download_image(url, path, name, payload=None):

@@ -1,7 +1,8 @@
 import requests
 from environs import Env
 from pathlib import Path
-from download import get_image_link, download_image 
+from download import get_image_link, download_image, get_total_images
+import random
 
 def get_groups_info(token):
     method = "groups.get"
@@ -81,11 +82,13 @@ def post_image(token, owner_id, attachments, message):
 def main():
     env = Env()
     env.read_env()
-    xkcd_link = "https://xkcd.com/info.0.json" 
     group_id = "215609822"
     vk_access_token = env.str("VK_ACCESS_TOKEN")
     save_folder = "images"
     image_name = "comix"
+    total_images = get_total_images("https://xkcd.com/info.0.json")
+    comix_number = random.randint(1, total_images)
+    xkcd_link = f"https://xkcd.com/{comix_number}/info.0.json" 
     image_url, message = get_image_link(xkcd_link)
 
     download_image(image_url, save_folder, image_name)
