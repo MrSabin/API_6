@@ -7,9 +7,10 @@ import requests
 def get_image_link(url):
     response = requests.get(url)
     response.raise_for_status()
-    image_link = response.json().get("img")
-    author_comment = response.json().get("alt")
-    return image_link, author_comment
+    image_link = response.json()['img']
+    author_comment = response.json()['alt']
+    total_images = response.json()['num']
+    return image_link, author_comment, total_images
 
 
 def download_image(url, path, name, payload=None):
