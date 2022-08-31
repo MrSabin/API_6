@@ -3,6 +3,7 @@ from environs import Env
 from pathlib import Path
 from download import get_image_link, download_image, get_total_images
 import random
+import shutil
 
 def get_groups_info(token):
     method = "groups.get"
@@ -97,6 +98,7 @@ def main():
     image_id, image_owner_id = save_image(vk_access_token, group_id, server, photo, hash)
     attachments = f"photo{image_owner_id}_{image_id}" 
     post_image(vk_access_token, group_id, attachments, message)
+    shutil.rmtree('images')
 
 if __name__ == "__main__":
     main()
