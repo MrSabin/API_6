@@ -77,13 +77,12 @@ def post_image(token, owner_id, attachments, message):
             }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    print(response.json())
 
 
 def main():
     env = Env()
     env.read_env()
-    group_id = "215609822"
+    group_id = env.str("VK_GROUP_ID")
     vk_access_token = env.str("VK_ACCESS_TOKEN")
     save_folder = "images"
     image_name = "comix"
