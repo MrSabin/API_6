@@ -11,7 +11,7 @@ Python should be already installed.
 
 ## Before run
 
-1. Authorize on [VK](vk.com)
+1. Authorize on [VK](http://vk.com/)
 2. Create your group (you can do it [here](https://vk.com/groups?tab=admin&w=groups_create)) or use existing
 3. Create your app on [VK Dev](https://vk.com/dev), use `standalone` option
 4. Acquire `client_id` of your app by clicking `Edit` in [app page](https://vk.com/apps?act=manage). `client_id` will be in address bar
@@ -34,4 +34,4 @@ python main.py
 ```
 ## Project goals
 
-The code is written for educational purposes on online-course for web-developers [dvmn.org](dvmn.org)
+The code is written for educational purposes on online-course for web-developers [dvmn.org](https://dvmn.org/)
