@@ -6,15 +6,6 @@ import random
 import shutil
 
 
-def get_groups_info(token):
-    method = "groups.get"
-    api_version = "5.131"
-    payload = {"access_token": token, "v": api_version}
-    url = f"https://api.vk.com/method/{method}"
-    response = requests.get(url, params=payload)
-    response.raise_for_status()
-
-
 def get_upload_url(token, group_id):
     method = "photos.getWallUploadServer"
     api_version = "5.131"
