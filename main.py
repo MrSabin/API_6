@@ -70,7 +70,7 @@ def main():
     vk_access_token = env.str("VK_ACCESS_TOKEN")
     save_folder = "images"
     image_name = "comix"
-    total_images = get_total_images("https://xkcd.com/info.0.json")
+    total_images = get_total_images()
     comix_number = random.randint(1, total_images)
     xkcd_link = f"https://xkcd.com/{comix_number}/info.0.json"
     image_url, message = get_image_link(xkcd_link)

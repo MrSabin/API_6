@@ -12,8 +12,8 @@ def get_image_link(url):
     return image_link, author_comment
 
 
-def get_total_images(url):
-    response = requests.get(url)
+def get_total_images():
+    response = requests.get("https://xkcd.com/info.0.json")
     response.raise_for_status()
     total_images = response.json()['num']
     return total_images
