@@ -19,18 +19,10 @@ def get_total_images():
     return total_images
 
 
-def download_image(url, path, name, payload=None):
-    Path(path).mkdir(parents=True, exist_ok=True)
-    extension = extract_extension(url)
-    filename = Path(path, f"{name}{extension}")
-    response = requests.get(url, params=payload)
+def download_image(url):
+    parsed_url = urllib.parse.urlsplit(url)
+    filename = os.path.basename(parsed_url.path)
+    response = requests.get(url)
     response.raise_for_status()
     with open(filename, "wb") as file:
         file.write(response.content)
-
-
-def extract_extension(url):
-    parsed = urllib.parse.urlsplit(url)
-    unquoted = urllib.parse.unquote(parsed.path)
-    return os.path.splitext(unquoted)[-1]
-
