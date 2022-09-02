@@ -47,10 +47,11 @@ def save_image(token, group_id, server, photo, hash):
     return image_id, image_owner_id
 
 
-def post_image(token, owner_id, attachments, message):
+def post_image(token, owner_id, image_id, image_owner_id, message):
     method = "wall.post"
     api_version = "5.131"
     url = f"https://api.vk.com/method/{method}"
+    attachments = f"photo{image_owner_id}_{image_id}"
     payload = {
         "access_token": token,
         "owner_id": f"-{owner_id}",
@@ -81,8 +82,7 @@ def main():
     image_id, image_owner_id = save_image(
         vk_access_token, group_id, server, photo, hash
     )
-    attachments = f"photo{image_owner_id}_{image_id}"
-    post_image(vk_access_token, group_id, attachments, message)
+    post_image(vk_access_token, group_id, image_id, image_owner_id, message)
     shutil.rmtree("images")
 
 
