@@ -11,8 +11,9 @@ def get_total_images():
     return total_images
 
 
-def download_image(url):
-    response = requests.get(url)
+def download_image(comix_number):
+    xkcd_link = f"https://xkcd.com/{comix_number}/info.0.json"
+    response = requests.get(xkcd_link)
     response.raise_for_status()
     xkcd_answer = response.json()
     image_link = xkcd_answer['img']

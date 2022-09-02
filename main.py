@@ -1,9 +1,9 @@
 import requests
 from environs import Env
 from pathlib import Path
-from download import get_image_link, download_image, get_total_images
+from download import download_image, get_total_images
 import random
-import shutil
+import os
 
 
 def get_upload_url(token, group_id):
@@ -16,8 +16,8 @@ def get_upload_url(token, group_id):
     return response.json()["response"].get("upload_url")
 
 
-def send_image(upload_url):
-    path = Path.cwd() / "images" / "comix.png"
+def send_image(upload_url, filename):
+    path = Path.cwd() / filename 
     with open(path, "rb") as file:
         files = {"photo": file}
         response = requests.post(upload_url, files=files)
@@ -69,21 +69,18 @@ def main():
     env.read_env()
     group_id = env.str("VK_GROUP_ID")
     vk_access_token = env.str("VK_ACCESS_TOKEN")
-    save_folder = "images"
-    image_name = "comix"
     total_images = get_total_images()
     comix_number = random.randint(1, total_images)
-    xkcd_link = f"https://xkcd.com/{comix_number}/info.0.json"
-    image_url, message = get_image_link(xkcd_link)
-
-    download_image(image_url, save_folder, image_name)
+    filename, author_comment = download_image(comix_number)
     upload_url = get_upload_url(vk_access_token, group_id)
-    server, photo, hash = send_image(upload_url)
+    server, photo, hash = send_image(upload_url, filename)
     image_id, image_owner_id = save_image(
         vk_access_token, group_id, server, photo, hash
     )
-    post_image(vk_access_token, group_id, image_id, image_owner_id, message)
-    shutil.rmtree("images")
+    try:
+        post_image(vk_access_token, group_id, image_id, image_owner_id, author_comment)
+    finally:
+        os.remove(filename)
 
 
 if __name__ == "__main__":
