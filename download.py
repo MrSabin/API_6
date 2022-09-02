@@ -3,13 +3,6 @@ import urllib.parse
 
 import requests
 
-def get_image_link(url):
-    response = requests.get(url)
-    response.raise_for_status()
-    image_link = response.json()['img']
-    author_comment = response.json()['alt']
-    return image_link, author_comment
-
 
 def get_total_images():
     response = requests.get("https://xkcd.com/info.0.json")
@@ -19,9 +12,15 @@ def get_total_images():
 
 
 def download_image(url):
-    parsed_url = urllib.parse.urlsplit(url)
-    filename = os.path.basename(parsed_url.path)
     response = requests.get(url)
+    response.raise_for_status()
+    xkcd_answer = response.json()
+    image_link = xkcd_answer['img']
+    author_comment = xkcd_answer['alt']
+    parsed_url = urllib.parse.urlsplit(image_link)
+    filename = os.path.basename(parsed_url.path)
+    response = requests.get(image_link)
     response.raise_for_status()
     with open(filename, "wb") as file:
         file.write(response.content)
+    return filename, author_comment
