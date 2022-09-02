@@ -13,7 +13,6 @@ def get_groups_info(token):
     url = f"https://api.vk.com/method/{method}"
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    print(response.json())
 
 
 def get_upload_url(token, group_id):
