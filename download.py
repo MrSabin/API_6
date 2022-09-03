@@ -11,8 +11,8 @@ def get_total_images():
     return total_images
 
 
-def download_image(comix_number):
-    xkcd_link = f"https://xkcd.com/{comix_number}/info.0.json"
+def download_comics(comics_number):
+    xkcd_link = f"https://xkcd.com/{comics_number}/info.0.json"
     response = requests.get(xkcd_link)
     response.raise_for_status()
     xkcd_answer = response.json()
