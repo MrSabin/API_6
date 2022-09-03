@@ -22,9 +22,10 @@ def send_image(upload_url, filename):
         files = {"photo": file}
         response = requests.post(upload_url, files=files)
         response.raise_for_status()
-    server = response.json()["server"]
-    photo = response.json()["photo"]
-    hash = response.json()["hash"]
+    vk_api_answer = response.json()
+    server = vk_api_answer["server"]
+    photo = vk_api_answer["photo"]
+    hash = vk_api_answer["hash"]
     return server, photo, hash
 
 
@@ -42,8 +43,9 @@ def save_image(token, group_id, server, photo, hash):
     url = f"https://api.vk.com/method/{method}"
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    image_id = response.json()["response"][0]["id"]
-    image_owner_id = response.json()["response"][0]["owner_id"]
+    vk_api_answer = response.json()
+    image_id = vk_api_answer["response"][0]["id"]
+    image_owner_id = vk_api_answer["response"][0]["owner_id"]
     return image_id, image_owner_id
 
 
