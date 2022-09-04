@@ -29,15 +29,15 @@ def send_to_server(upload_url, filename):
     return vk_server, vk_photo, vk_hash
 
 
-def save_in_album(token, group_id, server, photo, hash):
+def save_in_album(token, group_id, vk_server, vk_photo, vk_hash):
     method = "photos.saveWallPhoto"
     api_version = "5.131"
     payload = {
         "access_token": token,
         "group_id": group_id,
-        "server": server,
-        "photo": photo,
-        "hash": hash,
+        "server": vk_server,
+        "photo": vk_photo,
+        "hash": vk_hash,
         "v": api_version,
     }
     url = f"https://api.vk.com/method/{method}"
