@@ -71,15 +71,15 @@ def main():
     env.read_env()
     group_id = env.str("VK_GROUP_ID")
     vk_access_token = env.str("VK_ACCESS_TOKEN")
-    total_images = get_total_images()
-    comics_number = random.randint(1, total_images)
-    filename, author_comment = download_comics(comics_number)
-    upload_url = get_upload_url(vk_access_token, group_id)
-    vk_server, vk_photo, vk_hash = send_to_server(upload_url, filename)
-    image_id, image_owner_id = save_in_album(
+    try:
+        total_images = get_total_images()
+        comics_number = random.randint(1, total_images)
+        filename, author_comment = download_comics(comics_number)
+        upload_url = get_upload_url(vk_access_token, group_id)
+        vk_server, vk_photo, vk_hash = send_to_server(upload_url, filename)
+        image_id, image_owner_id = save_in_album(
         vk_access_token, group_id, vk_server, vk_photo, vk_hash
     )
-    try:
         post_on_wall(vk_access_token, group_id, image_id, image_owner_id, author_comment)
     finally:
         os.remove(filename)
